@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OceanDrive64 · Stamford, Connecticut</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F7F5F2;
+      --fg: #1F2933;
+      --primary: #1F2933;
+      --primary-fg: #F7F5F2;
+      --secondary: #EAE6DF;
+      --accent: #B89B72;
+      --accent-hover: #947A56;
+      --accent-light: #C8AD88;
+      --muted: #6B7A8F;
+      --border: #D8D3CC;
+      --card-bg: #FFFFFF;
+      --font-display: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4,h5,h6 { font-family: var(--font-display); margin: 0; }
+    p { margin: 0; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* Typography */
+    .font-display { font-family: var(--font-display); }
+    .text-hero-xl { font-size: clamp(2.8rem,6vw,5.5rem); line-height: 1.05; letter-spacing: -0.02em; }
+    .text-hero-lg { font-size: clamp(2.2rem,4.5vw,4rem); line-height: 1.1; letter-spacing: -0.02em; }
+    .text-section-heading { font-size: clamp(1.8rem,3vw,2.8rem); line-height: 1.15; letter-spacing: -0.015em; }
+    .tracking-luxury { letter-spacing: 0.18em; }
+    .section-label {
+      font-family: var(--font-sans);
+      font-size: 0.625rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.22em;
+      color: var(--accent);
+    }
+    .divider-gold { width: 2.5rem; height: 1px; background: var(--accent); }
+    .divider-gold.mx-auto { margin-left: auto; margin-right: auto; }
+
+    /* Buttons */
+    .btn-primary-luxury {
+      display: inline-flex; align-items: center; gap: 0.625rem;
+      padding: 0.875rem 2rem;
+      background: var(--accent); color: var(--primary-fg);
+      font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      border: 1px solid var(--accent); border-radius: 0;
+      transition: background 0.3s ease, border-color 0.3s ease;
+      cursor: pointer; white-space: nowrap;
+    }
+    .btn-primary-luxury:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--primary-fg); }
+    .btn-outline-light-luxury {
+      display: inline-flex; align-items: center; gap: 0.625rem;
+      padding: 0.875rem 2rem;
+      background: transparent; color: #F7F5F2;
+      font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      border: 1px solid rgba(247,245,242,0.5); border-radius: 0;
+      transition: background 0.3s ease, border-color 0.3s ease;
+      cursor: pointer; white-space: nowrap;
+    }
+    .btn-outline-light-luxury:hover { background: rgba(247,245,242,0.12); border-color: rgba(247,245,242,0.8); color: #F7F5F2; }
+    .btn-outline-dark-luxury {
+      display: inline-flex; align-items: center; gap: 0.625rem;
+      padding: 0.875rem 2rem;
+      background: transparent; color: var(--fg);
+      font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      border: 1px solid var(--border); border-radius: 0;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      cursor: pointer; white-space: nowrap;
+    }
+    .btn-outline-dark-luxury:hover { background: var(--fg); border-color: var(--fg); color: var(--primary-fg); }
+
+    /* Header */
+    #site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      transition: all 0.5s ease;
+      background: linear-gradient(to bottom, rgba(31,41,51,0.7), transparent);
+      backdrop-filter: blur(4px);
+    }
+    #site-header.scrolled {
+      background: rgba(31,41,51,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .header-inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 1.5rem; height: 80px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-link { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; }
+    .logo-mark {
+      width: 36px; height: 36px; border: 1px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-mark span { color: var(--accent); font-size: 1rem; font-family: var(--font-display); font-style: italic; }
+    .logo-text-main { font-family: var(--font-display); font-size: 1rem; font-style: italic; color: #fff; line-height: 1; }
+    .logo-text-sub { font-family: var(--font-sans); font-size: 0.5625rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); line-height: 1; margin-top: 3px; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-link-item {
+      font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 400;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: rgba(247,245,242,0.75); transition: color 0.25s;
+      cursor: pointer; background: none; border: none; padding: 0;
+    }
+    .nav-link-item:hover, .nav-link-item.active { color: #F7F5F2; }
+    .mobile-toggle { display: none; background: none; border: none; color: #fff; padding: 0.5rem; cursor: pointer; }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(31,41,51,0.97); backdrop-filter: blur(16px);
+      flex-direction: column; padding: 6rem 2rem 3rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-nav-link {
+      font-family: var(--font-display); font-size: 2rem; font-style: italic;
+      color: rgba(255,255,255,0.9); cursor: pointer;
+      background: none; border: none; text-align: left; padding: 0.5rem 0;
+      transition: color 0.25s;
+    }
+    .mobile-nav-link:hover { color: var(--accent); }
+
+    /* Scrim */
+    .scrim-dark {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(31,41,51,0.88) 0%, rgba(31,41,51,0.55) 45%, transparent 100%);
+    }
+    .scrim-overlay { position: absolute; inset: 0; background: rgba(31,41,51,0.62); }
+
+    /* Hero sections */
+    .hero-section {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding-bottom: 6rem; overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-content { position: relative; z-index: 10; max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+
+    /* Page hero (shorter) */
+    .page-hero {
+      position: relative; min-height: 70vh;
+      display: flex; align-items: flex-end; padding-bottom: 6rem; overflow: hidden;
+    }
+    .page-hero-sm {
+      position: relative; min-height: 60vh;
+      display: flex; align-items: flex-end; padding-bottom: 6rem; overflow: hidden;
+    }
+    .page-hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .page-hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .page-hero-content { position: relative; z-index: 10; max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+
+    /* Spec cards */
+    .spec-card {
+      padding: 2rem 1.5rem; border: 1px solid var(--border);
+      background: var(--bg); transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .spec-card:hover { border-color: var(--accent); box-shadow: 0 4px 24px rgba(184,155,114,0.1); }
+    .spec-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); }
+    @media(max-width:768px) { .spec-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* Image hover zoom */
+    .img-zoom { overflow: hidden; }
+    .img-zoom img { transition: transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); width: 100%; height: 100%; object-fit: cover; }
+    .img-zoom:hover img { transform: scale(1.06); }
+
+    /* Glass panels */
+    .glass-light {
+      background: rgba(247,245,242,0.85); backdrop-filter: blur(12px);
+      border: 1px solid rgba(216,211,204,0.6);
+    }
+    .glass-dark {
+      background: rgba(31,41,51,0.75); backdrop-filter: blur(16px);
+      border: 1px solid rgba(184,155,114,0.2);
+    }
+
+    /* Section wrappers */
+    .section-content { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Fade animations */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* Gallery masonry */
+    .masonry { columns: 3; column-gap: 0.75rem; }
+    .masonry-item { break-inside: avoid; margin-bottom: 0.75rem; }
+    @media(max-width:1024px) { .masonry { columns: 2; } }
+    @media(max-width:640px) { .masonry { columns: 1; } }
+
+    /* Filter tabs */
+    .filter-tab {
+      font-family: var(--font-sans); font-size: 0.625rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      padding: 0.625rem 1.25rem; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); cursor: pointer;
+      transition: all 0.25s;
+    }
+    .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-tab.active { background: var(--fg); border-color: var(--fg); color: var(--primary-fg); }
+
+    /* Form inputs */
+    .input-luxury {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1px solid var(--border); padding: 0.875rem 0;
+      font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 300;
+      color: var(--fg); outline: none; transition: border-color 0.3s;
+    }
+    .input-luxury::placeholder { color: var(--muted); opacity: 0.7; }
+    .input-luxury:focus { border-bottom-color: var(--accent); }
+    .label-luxury {
+      display: block; font-family: var(--font-sans); font-size: 0.625rem;
+      font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .select-luxury {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1px solid var(--border); padding: 0.875rem 0;
+      font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 300;
+      color: var(--fg); outline: none; appearance: none; cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .select-luxury:focus { border-bottom-color: var(--accent); }
+
+    /* Accordion */
+    .accordion-item { border-bottom: 1px solid var(--border); }
+    .accordion-btn {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 0; text-align: left; background: none; border: none; cursor: pointer;
+    }
+    .accordion-btn:hover .acc-q { color: var(--accent); }
+    .acc-q { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; color: var(--fg); padding-right: 1.5rem; transition: color 0.25s; }
+    .acc-icon { flex-shrink: 0; color: var(--accent); font-size: 1.2rem; line-height: 1; transition: transform 0.3s; }
+    .acc-icon.open { transform: rotate(45deg); }
+    .acc-body { display: none; padding-bottom: 1.5rem; padding-right: 2.5rem; }
+    .acc-body.open { display: block; }
+    .acc-body p { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 300; color: var(--muted); line-height: 1.7; }
+
+    /* Room rows */
+    .room-row { display: grid; grid-template-columns: 1fr 1fr; }
+    @media(max-width:1024px) { .room-row { grid-template-columns: 1fr; } }
+    .room-image { position: relative; min-height: 400px; overflow: hidden; }
+    .room-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .room-image:hover img { transform: scale(1.06); }
+    .room-text { display: flex; flex-direction: column; justify-content: center; padding: 3.5rem 4rem; background: var(--bg); }
+    @media(max-width:768px) { .room-text { padding: 2.5rem 1.5rem; } }
+
+    /* Lifestyle cards */
+    .lifestyle-card { cursor: default; }
+    .lifestyle-card .card-img-wrap { overflow: hidden; aspect-ratio: 4/3; margin-bottom: 1.25rem; }
+    .lifestyle-card .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%); transition: filter 0.7s ease, transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .lifestyle-card:hover .card-img-wrap img { filter: grayscale(0%); transform: scale(1.06); }
+    .lifestyle-card h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--fg); margin-bottom: 0.75rem; transition: color 0.3s; }
+    .lifestyle-card:hover h3 { color: var(--accent); }
+    .lifestyle-card p { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 300; color: var(--muted); line-height: 1.7; }
+
+    /* Gallery hover overlay */
+    .gallery-item { position: relative; overflow: hidden; cursor: pointer; margin-bottom: 0.75rem; }
+    .gallery-item img { width: 100%; display: block; transition: transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0; background: rgba(31,41,51,0); 
+      display: flex; align-items: flex-end; padding: 1rem;
+      transition: background 0.5s;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(31,41,51,0.25); }
+    .gallery-cat-label { font-family: var(--font-sans); font-size: 0.5625rem; text-transform: uppercase; letter-spacing: 0.18em; color: #fff; opacity: 0; transition: opacity 0.3s; }
+    .gallery-item:hover .gallery-cat-label { opacity: 1; }
+
+    /* Contact info cards */
+    .info-card { padding: 2rem 1.5rem; border: 1px solid var(--border); background: var(--secondary); transition: border-color 0.3s, box-shadow 0.3s; }
+    .info-card:hover { border-color: var(--accent); box-shadow: 0 4px 24px rgba(184,155,114,0.1); }
+
+    /* Proximity list */
+    .prox-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .prox-item:hover .prox-place { color: var(--accent); }
+    .prox-place { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); transition: color 0.25s; }
+    .prox-dist { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; }
+
+    /* Scroll indicator */
+    .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .scroll-label { font-family: var(--font-sans); font-size: 0.5625rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.4); }
+    .scroll-line { width: 1px; height: 2.5rem; background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent); }
+
+    /* Footer */
+    #site-footer { border-top: 1px solid var(--border); background: var(--bg); padding: 4rem 1.5rem; }
+    .footer-inner { max-width: 1400px; margin: 0 auto; }
+    .footer-bottom { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+    .footer-link { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--muted); transition: color 0.25s; cursor: pointer; }
+    .footer-link:hover { color: var(--fg); }
+
+    /* CTA sections */
+    .cta-section { position: relative; min-height: 55vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .cta-section-tall { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .cta-bg { position: absolute; inset: 0; z-index: 0; }
+    .cta-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .cta-content { position: relative; z-index: 10; text-align: center; padding: 0 1.5rem; max-width: 48rem; margin: 0 auto; }
+
+    /* Amenities list */
+    .amenity-item { display: flex; align-items: center; gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    .amenity-icon { color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+    .amenity-label { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); transition: color 0.25s; }
+    .amenity-item:hover .amenity-label { color: var(--accent); }
+
+    /* Lease cards grid */
+    .lease-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); }
+    @media(max-width:1024px) { .lease-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:576px) { .lease-grid { grid-template-columns: 1fr; } }
+
+    /* Gallery preview masonry-like */
+    .preview-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; gap: 0.75rem; }
+    .preview-grid .tall { grid-row: 1 / 3; }
+    .preview-img { overflow: hidden; position: relative; }
+    .preview-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .preview-img:hover img { transform: scale(1.06); }
+    @media(max-width:768px) { .preview-grid { grid-template-columns: 1fr 1fr; } .preview-grid .tall { grid-row: auto; } }
+
+    /* SVG icons */
+    .icon-svg { display: inline-block; }
+
+    /* Highlight strip */
+    .highlight-strip {
+      display: flex; flex-wrap: wrap; gap: 2rem;
+      padding-top: 2rem; margin-top: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      .nav-links, .header-cta { display: none; }
+      .mobile-toggle { display: block; }
+      .room-row { grid-template-columns: 1fr; }
+      .room-text { order: 2; }
+      .room-image { order: 1; }
+    }
+
+    /* About section grid images */
+    .about-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; position: relative; }
+    .about-img-1 { aspect-ratio: 3/4; overflow: hidden; }
+    .about-img-2 { aspect-ratio: 3/4; overflow: hidden; margin-top: 3rem; }
+    .about-imgs img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .about-img-1:hover img, .about-img-2:hover img { transform: scale(1.06); }
+    .float-stat {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      padding: 2rem; text-align: center; min-width: 180px; z-index: 10;
+    }
+
+    /* Shippan section */
+    .shippan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+    @media(max-width:1024px) { .shippan-grid { grid-template-columns: 1fr; } }
+
+    /* Local gallery */
+    .local-gallery { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+    @media(max-width:768px) { .local-gallery { grid-template-columns: repeat(2,1fr); } }
+
+    /* Contact form success */
+    .form-success { display: none; }
+    .form-success.show { display: block; }
+    .form-form { }
+    .form-form.hide { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header id="site-header">
+  <div class="header-inner">
+    <div class="logo-link" onclick="navigate('home')">
+      <div class="logo-mark"><span>O</span></div>
+      <div>
+        <div class="logo-text-main">OceanDrive64</div>
+        <div class="logo-text-sub">Stamford, Connecticut</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <button class="nav-link-item" onclick="navigate('home')">Home</button>
+      <button class="nav-link-item" onclick="navigate('residence')">The Residence</button>
+      <button class="nav-link-item" onclick="navigate('lifestyle')">Waterfront Lifestyle</button>
+      <button class="nav-link-item" onclick="navigate('gallery')">Gallery</button>
+      <button class="nav-link-item" onclick="navigate('contact')">Contact</button>
+    </nav>
+    <a class="btn-primary-luxury header-cta" onclick="navigate('contact')" style="cursor:pointer;">Schedule a Private Tour</a>
+    <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobile()">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:2rem;">
+    <button class="mobile-nav-link" onclick="navigate('home');toggleMobile()">Home</button>
+    <button class="mobile-nav-link" onclick="navigate('residence');toggleMobile()">The Residence</button>
+    <button class="mobile-nav-link" onclick="navigate('lifestyle');toggleMobile()">Waterfront Lifestyle</button>
+    <button class="mobile-nav-link" onclick="navigate('gallery');toggleMobile()">Gallery</button>
+    <button class="mobile-nav-link" onclick="navigate('contact');toggleMobile()">Contact</button>
+  </div>
+  <div style="margin-top:auto;">
+    <a class="btn-primary-luxury" style="width:100%;justify-content:center;cursor:pointer;" onclick="navigate('contact');toggleMobile()">Schedule a Private Tour</a>
+  </div>
+</div>
+
+<!-- ========== HOME PAGE ========== -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1698330016511-37562e282fed?w=1800&q=80" alt="Luxury waterfront residence on Long Island Sound at golden hour" />
+      <div class="scrim-dark"></div>
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.3)"></div>
+    </div>
+    <div class="hero-content">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:flex-end;" class="hero-grid">
+        <div>
+          <div class="fade-up" style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;">
+            <span style="height:1px;width:2.5rem;background:var(--accent);opacity:0.8;display:block"></span>
+            <span class="section-label" style="color:var(--accent);">64 Ocean Drive East · Stamford, Connecticut</span>
+          </div>
+          <h1 class="fade-up text-hero-xl" style="color:#fff;line-height:1.05;">
+            Private Waterfront<br/>
+            <em style="color:var(--accent-light);">Living</em> on<br/>
+            Long Island Sound
+          </h1>
+        </div>
+        <div>
+          <p class="fade-up" style="font-size:1rem;font-weight:300;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2.5rem;max-width:28rem;">
+            A beautifully renovated coastal residence in Stamford's prestigious Shippan Point offering panoramic waterfront views, luxury interiors, and seamless indoor-outdoor living.
+          </p>
+          <div class="fade-up" style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;">
+            <a class="btn-primary-luxury" style="cursor:pointer;" onclick="navigate('contact')">Request Lease Information</a>
+            <a class="btn-outline-light-luxury" style="cursor:pointer;" onclick="navigate('contact')">Schedule a Tour</a>
+          </div>
+          <div class="highlight-strip">
+            <div><p style="font-family:var(--font-display);font-size:1.5rem;color:#fff;font-weight:600;">4</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.5);margin-top:3px;">Bedrooms</p></div>
+            <div><p style="font-family:var(--font-display);font-size:1.5rem;color:#fff;font-weight:600;">4</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.5);margin-top:3px;">Bathrooms</p></div>
+            <div><p style="font-family:var(--font-display);font-size:1.5rem;color:#fff;font-weight:600;">3,132</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.5);margin-top:3px;">Sq Ft</p></div>
+            <div><p style="font-family:var(--font-display);font-size:1.5rem;color:#fff;font-weight:600;">75 ft</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.5);margin-top:3px;">Waterfront</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span class="scroll-label">Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Property Highlights -->
+  <section style="padding:6rem 0;background:var(--secondary);">
+    <div class="section-content">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:4rem;">
+        <div>
+          <p class="section-label" style="margin-bottom:1rem;">Property Specifications</p>
+          <h2 class="text-section-heading fade-up" style="color:var(--fg);">At a Glance</h2>
+        </div>
+        <div class="divider-gold"></div>
+      </div>
+      <div class="spec-grid" id="specsGrid">
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">⌂</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">4</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Bedrooms</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Spacious private retreats</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">✦</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">4</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Bathrooms</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Luxuriously appointed</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">◻</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">3,132</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Sq Ft</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Interior living space</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">📍</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">75 ft</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Waterfront</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Direct shoreline frontage</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">🚗</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">2-Car</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Garage</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Detached with storage</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">☀</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">Private</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Sandy Shoreline</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Accessible at low tide</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">▦</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">Bluestone</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Patio</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Waterfront entertaining</p>
+        </div>
+        <div class="spec-card fade-up" style="background:var(--secondary);">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">↓</p>
+          <p style="font-family:var(--font-display);font-size:1.875rem;color:var(--fg);margin-bottom:0.25rem;">Finished</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);margin-bottom:0.5rem;">Lower Level</p>
+          <p style="font-size:0.75rem;font-weight:300;color:var(--muted);">Walk-out access</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="display:grid;grid-template-columns:5fr 7fr;gap:6rem;align-items:center;" class="about-layout">
+        <div class="fade-up">
+          <p class="section-label" style="margin-bottom:1.5rem;">About the Property</p>
+          <div class="divider-gold" style="margin-bottom:2rem;"></div>
+          <h2 class="text-section-heading" style="color:var(--fg);margin-bottom:2rem;line-height:1.15;">
+            A Rare Stamford<br/><em>Waterfront Residence</em>
+          </h2>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;">
+            Situated directly on the Long Island Sound, this exceptional Shippan Point residence combines timeless coastal charm with modern luxury living. Expansive windows frame breathtaking water views throughout the home.
+          </p>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2.5rem;">
+            At low tide, a private sandy shoreline emerges just steps from the property — ideal for kayaking, paddle boarding, or relaxing beside the water. Only minutes from downtown Stamford and under an hour from Manhattan.
+          </p>
+          <a class="btn-outline-dark-luxury" style="cursor:pointer;" onclick="navigate('residence')">Explore the Residence</a>
+        </div>
+        <div class="fade-up">
+          <div class="about-imgs">
+            <div class="about-img-1 img-zoom">
+              <img src="https://img.rocket.new/generatedImages/rocket_gen_img_133a87c07-1772207974486.png" alt="Luxury waterfront living room" loading="lazy" />
+            </div>
+            <div class="about-img-2 img-zoom">
+              <img src="https://img.rocket.new/generatedImages/rocket_gen_img_1760049ee-1767981187665.png" alt="Modern luxury coastal home exterior" loading="lazy" />
+            </div>
+            <div class="float-stat glass-light shadow-lg">
+              <p style="font-family:var(--font-display);font-size:2.5rem;color:var(--fg);font-weight:600;line-height:1;">75 ft</p>
+              <p style="font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-top:0.5rem;">Private Waterfront<br/>Frontage</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interior Showcase -->
+  <section style="background:var(--bg);">
+    <div class="section-content" style="padding-top:4rem;padding-bottom:1rem;">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:1rem;">
+        <div>
+          <p class="section-label" style="margin-bottom:1rem;">Interior & Exterior</p>
+          <h2 class="text-section-heading fade-up" style="color:var(--fg);">Curated Living Spaces</h2>
+        </div>
+        <a class="btn-outline-dark-luxury fade-up" style="cursor:pointer;" onclick="navigate('residence')">View Full Residence →</a>
+      </div>
+    </div>
+    <div>
+      <!-- Living Room -->
+      <div class="room-row fade-up">
+        <div class="room-image"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_124330655-1772622670233.png" alt="Luxury living room with panoramic water views" loading="lazy" /></div>
+        <div class="room-text">
+          <p class="section-label" style="margin-bottom:1.25rem;">Living Room</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Waterfront Living Room</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2rem;">The main living area commands sweeping panoramic views of Long Island Sound through floor-to-ceiling windows. A refined fireplace anchors the space, while wide-plank hardwood floors and coastal-toned furnishings create an atmosphere of effortless elegance.</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);">Fireplace · Water Views · Hardwood Floors</p>
+        </div>
+      </div>
+      <!-- Kitchen -->
+      <div class="room-row fade-up">
+        <div class="room-image" style="order:2 !important;"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_17b20bba3-1772153562902.png" alt="Modern luxury kitchen" loading="lazy" /></div>
+        <div class="room-text" style="order:1 !important;">
+          <p class="section-label" style="margin-bottom:1.25rem;">Kitchen</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Chef's Kitchen</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2rem;">A fully updated gourmet kitchen features premium appliances, custom cabinetry, and generous counter space — designed for both intimate dinners and grand entertaining. Water views provide an extraordinary backdrop.</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);">Premium Appliances · Custom Cabinetry · Water Views</p>
+        </div>
+      </div>
+      <!-- Bedrooms -->
+      <div class="room-row fade-up">
+        <div class="room-image"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_155b1b932-1772062602535.png" alt="Serene luxury primary bedroom" loading="lazy" /></div>
+        <div class="room-text">
+          <p class="section-label" style="margin-bottom:1.25rem;">Bedrooms</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Private Bedroom Retreats</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2rem;">Four generously proportioned bedrooms each offer a sense of sanctuary — with walk-in closets, refined finishes, and views that make every morning extraordinary. The primary suite features a spa-caliber ensuite bath and private terrace access.</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);">Walk-In Closets · Ensuite Baths · Private Views</p>
+        </div>
+      </div>
+      <!-- Outdoor -->
+      <div class="room-row fade-up">
+        <div class="room-image" style="order:2 !important;"><img src="https://images.unsplash.com/photo-1684236835993-3c60fcc382d4?w=1200&q=80" alt="Luxury outdoor waterfront patio" loading="lazy" /></div>
+        <div class="room-text" style="order:1 !important;">
+          <p class="section-label" style="margin-bottom:1.25rem;">Outdoor</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Outdoor Waterfront Patio</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2rem;">The expansive bluestone patio extends seamlessly from the living spaces to the water's edge — perfect for al fresco dining, morning coffee with Sound views, or evening entertaining as the sun sets over the Connecticut coastline.</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);">Bluestone Patio · Waterfront Access · Seawall</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle Section -->
+  <section style="padding:7rem 0;background:var(--secondary);">
+    <div class="section-content">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:4rem;">
+        <div>
+          <p class="section-label" style="margin-bottom:1rem;">The Lifestyle</p>
+          <h2 class="text-section-heading fade-up" style="color:var(--fg);line-height:1.15;">Experience Coastal<br/><em>Connecticut Living</em></h2>
+        </div>
+        <p style="font-size:0.875rem;font-weight:300;color:var(--muted);max-width:16rem;line-height:1.7;">Every day at 64 Ocean Drive brings a new dimension of waterfront living.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;" class="lifestyle-grid">
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1734772978171-0e5d75bd5eca?w=800&q=80" alt="Waterfront sunset" loading="lazy" /></div>
+          <h3>Waterfront Sunsets</h3>
+          <p>Watch the sun dissolve into Long Island Sound from your private bluestone patio each evening.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1620466459351-ddaaea83a653?w=800&q=80" alt="Kayaking on calm water" loading="lazy" /></div>
+          <h3>Kayaking & Paddle Boarding</h3>
+          <p>Launch directly from the private shoreline for morning paddles across calm Connecticut waters.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1587571164387-df579abdc4f3?w=800&q=80" alt="Home office with water view" loading="lazy" /></div>
+          <h3>Executive Remote Work</h3>
+          <p>A refined home office environment with unmatched waterfront inspiration and high-speed connectivity.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_1e783dfe8-1772966504350.png" alt="Outdoor dinner party" loading="lazy" /></div>
+          <h3>Entertaining by the Water</h3>
+          <p>Host unforgettable gatherings on the bluestone patio with the Sound as your backdrop.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1642641387718-a7c105193afe?w=800&q=80" alt="Coastal privacy path" loading="lazy" /></div>
+          <h3>Coastal Privacy</h3>
+          <p>Enjoy rare seclusion in one of Stamford's most sought-after waterfront enclaves.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1696225478519-edf7501e0df8?w=800&q=80" alt="Modern train station" loading="lazy" /></div>
+          <h3>Quick Access to NYC</h3>
+          <p>Metro-North delivers you to Grand Central in under 60 minutes — waterfront living without compromise.</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:4rem;">
+        <a class="btn-outline-dark-luxury" style="cursor:pointer;" onclick="navigate('lifestyle')">Explore the Lifestyle</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Preview -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:3.5rem;">
+        <div>
+          <p class="section-label" style="margin-bottom:1rem;">Photography</p>
+          <h2 class="text-section-heading fade-up" style="color:var(--fg);">A Visual Journey</h2>
+        </div>
+        <a class="btn-outline-dark-luxury fade-up" style="cursor:pointer;" onclick="navigate('gallery')">View Full Gallery</a>
+      </div>
+      <div class="preview-grid fade-up">
+        <div class="preview-img tall img-zoom" style="border-radius:2px;min-height:520px;">
+          <img src="https://img.rocket.new/generatedImages/rocket_gen_img_18088a9c8-1772500548734.png" alt="Luxury coastal home exterior" loading="lazy" style="height:100%;" />
+        </div>
+        <div class="preview-img img-zoom" style="border-radius:2px;aspect-ratio:4/3;">
+          <img src="https://img.rocket.new/generatedImages/rocket_gen_img_1b7e03430-1772751062559.png" alt="Modern living room interior" loading="lazy" />
+        </div>
+        <div class="preview-img img-zoom" style="border-radius:2px;aspect-ratio:4/3;">
+          <img src="https://images.unsplash.com/photo-1676500850828-1f643aba7639?w=800&q=80" alt="Elegant kitchen" loading="lazy" />
+        </div>
+        <div class="preview-img img-zoom" style="border-radius:2px;aspect-ratio:4/3;">
+          <img src="https://images.unsplash.com/photo-1718894071528-1108a094cc78?w=800&q=80" alt="Serene master bedroom" loading="lazy" />
+        </div>
+        <div class="preview-img img-zoom" style="border-radius:2px;aspect-ratio:4/3;">
+          <img src="https://images.unsplash.com/photo-1711673506154-5395b55af086?w=800&q=80" alt="Panoramic waterfront view" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Preview -->
+  <section style="padding:7rem 0;background:var(--secondary);">
+    <div class="section-content fade-up">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;" class="location-layout">
+        <div>
+          <p class="section-label" style="margin-bottom:1.5rem;">Location</p>
+          <div class="divider-gold" style="margin-bottom:2rem;"></div>
+          <h2 class="text-section-heading" style="color:var(--fg);margin-bottom:2rem;line-height:1.15;">Stamford Convenience<br/><em>Meets Waterfront Serenity</em></h2>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:3rem;">Located in the prestigious Shippan Point neighborhood, the residence offers immediate access to Stamford's vibrant downtown, marinas, fine dining, beaches, and Metro-North rail service to Manhattan.</p>
+          <div>
+            <div class="prox-item"><span class="prox-place">Downtown Stamford</span><span class="prox-dist">8 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Metro-North Station</span><span class="prox-dist">10 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Grand Central Terminal</span><span class="prox-dist">&lt; 60 min train</span></div>
+            <div class="prox-item"><span class="prox-place">Stamford Marina</span><span class="prox-dist">5 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Cove Island Beach</span><span class="prox-dist">4 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Greenwich, CT</span><span class="prox-dist">12 min drive</span></div>
+          </div>
+        </div>
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;position:relative;">
+          <img src="https://images.unsplash.com/photo-1613080624635-de56a3975958?w=1200&q=80" alt="Aerial view of Stamford Connecticut coastline" loading="lazy" />
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem;" class="glass-light" style="padding:1.25rem 1.5rem;">
+            <div class="glass-light" style="padding:1.25rem 1.5rem;">
+              <p style="font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--fg);">Shippan Point</p>
+              <p style="font-family:var(--font-display);font-size:0.875rem;font-style:italic;color:var(--fg);margin-top:2px;">Stamford, Connecticut</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-section-tall">
+    <div class="cta-bg">
+      <img src="https://images.unsplash.com/photo-1542565048-55c9ef0d6e35?w=1800&q=80" alt="Luxury waterfront home at dusk" />
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.78)"></div>
+    </div>
+    <div class="cta-content fade-up">
+      <p class="section-label" style="color:var(--accent);margin-bottom:1.5rem;">Private Tours Available</p>
+      <div class="divider-gold mx-auto" style="margin-bottom:2rem;"></div>
+      <h2 class="text-hero-lg" style="color:#fff;margin-bottom:1.5rem;line-height:1.1;">Schedule Your<br/><em>Private Tour</em></h2>
+      <p style="font-size:1rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.75;margin-bottom:3rem;max-width:32rem;margin-left:auto;margin-right:auto;">Discover one of Stamford's most exclusive waterfront long-term rental opportunities. In-person and virtual tours available by appointment.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+        <a class="btn-primary-luxury" style="cursor:pointer;" onclick="navigate('contact')">Request Leasing Details</a>
+        <a class="btn-outline-light-luxury" style="cursor:pointer;" onclick="navigate('contact')">Contact Owner</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== CONTACT PAGE ========== -->
+<div class="page" id="page-contact">
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="https://images.unsplash.com/photo-1542565048-55c9ef0d6e35?w=1800&q=80" alt="Luxury waterfront residence at golden hour" />
+      <div class="scrim-dark"></div>
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.45)"></div>
+    </div>
+    <div class="page-hero-content fade-up">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;">
+        <span style="height:1px;width:2.5rem;background:var(--accent);display:block;"></span>
+        <span class="section-label" style="color:var(--accent);">Private Showings · Lease Inquiries</span>
+      </div>
+      <h1 class="text-hero-xl" style="color:#fff;max-width:32rem;line-height:1.05;">Schedule a<br/><em>Private Tour</em></h1>
+      <p style="font-size:1.125rem;font-weight:300;color:rgba(255,255,255,0.75);max-width:32rem;margin-top:1.5rem;line-height:1.7;">Discover one of Stamford's most exclusive waterfront rental opportunities.</p>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="display:grid;grid-template-columns:4fr 8fr;gap:6rem;align-items:start;" class="contact-layout">
+        <!-- Left -->
+        <div class="fade-up">
+          <p class="section-label" style="margin-bottom:1.5rem;">Inquire Now</p>
+          <div class="divider-gold" style="margin-bottom:2rem;"></div>
+          <h2 class="text-section-heading" style="color:var(--fg);margin-bottom:2rem;line-height:1.15;">Begin Your<br/><em>Inquiry</em></h2>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:3rem;">We welcome inquiries from qualified tenants. All submissions are treated with complete discretion. A member of our team will respond within 24 hours.</p>
+          <div style="display:flex;flex-direction:column;gap:2rem;">
+            <div style="display:flex;gap:1.25rem;">
+              <div style="width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--accent);">✦</span></div>
+              <div><h4 style="font-size:0.875rem;font-weight:500;color:var(--fg);margin-bottom:0.25rem;">Confidential Process</h4><p style="font-size:0.75rem;color:var(--muted);font-weight:300;">All inquiries handled with complete discretion.</p></div>
+            </div>
+            <div style="display:flex;gap:1.25rem;">
+              <div style="width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--accent);">✦</span></div>
+              <div><h4 style="font-size:0.875rem;font-weight:500;color:var(--fg);margin-bottom:0.25rem;">24-Hour Response</h4><p style="font-size:0.75rem;color:var(--muted);font-weight:300;">Prompt personal response to all qualified inquiries.</p></div>
+            </div>
+            <div style="display:flex;gap:1.25rem;">
+              <div style="width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--accent);">✦</span></div>
+              <div><h4 style="font-size:0.875rem;font-weight:500;color:var(--fg);margin-bottom:0.25rem;">Private Showings</h4><p style="font-size:0.75rem;color:var(--muted);font-weight:300;">In-person and virtual tours by appointment only.</p></div>
+            </div>
+          </div>
+        </div>
+        <!-- Right -->
+        <div class="fade-up">
+          <div class="form-success" id="formSuccess">
+            <div class="glass-light" style="padding:4rem;text-align:center;">
+              <div class="divider-gold mx-auto" style="margin-bottom:2rem;"></div>
+              <h3 style="font-family:var(--font-display);font-size:1.5rem;font-style:italic;color:var(--fg);margin-bottom:1rem;">Thank You for Your Inquiry</h3>
+              <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;max-width:28rem;margin:0 auto;">We have received your message and will be in touch within 24 hours to arrange your private showing at 64 Ocean Drive East.</p>
+            </div>
+          </div>
+          <form class="form-form" id="contactForm" onsubmit="submitForm(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;">
+              <div>
+                <label class="label-luxury">Full Name</label>
+                <input type="text" placeholder="Alexandra Chen" required class="input-luxury" />
+              </div>
+              <div>
+                <label class="label-luxury">Email Address</label>
+                <input type="email" placeholder="alexandra@company.com" required class="input-luxury" />
+              </div>
+              <div>
+                <label class="label-luxury">Phone Number</label>
+                <input type="tel" placeholder="+1 (203) 000-0000" class="input-luxury" />
+              </div>
+              <div>
+                <label class="label-luxury">Desired Lease Term</label>
+                <select class="select-luxury">
+                  <option value="" disabled selected>Select lease term</option>
+                  <option>12 Months</option>
+                  <option>18 Months</option>
+                  <option>24 Months</option>
+                  <option>Flexible — Please Advise</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-bottom:2.5rem;">
+              <label class="label-luxury">Message</label>
+              <textarea rows="5" placeholder="Please share any questions about the property, your timeline, or preferred showing dates..." class="input-luxury" style="resize:none;"></textarea>
+            </div>
+            <button type="submit" class="btn-primary-luxury" style="width:100%;justify-content:center;">Submit Inquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Info -->
+  <section style="padding:6rem 0;background:var(--secondary);">
+    <div class="section-content fade-up">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1px;">
+        <div class="info-card">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">📍</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:0.5rem;">Property Address</p>
+          <p style="font-family:var(--font-display);font-size:1.125rem;color:var(--fg);line-height:1.4;">64 Ocean Drive East<br/><em>Stamford, CT 06902</em></p>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;font-weight:300;">Shippan Point Neighborhood</p>
+        </div>
+        <div class="info-card">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">✉</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:0.5rem;">Email</p>
+          <a href="mailto:inquiries@oceandrive64.com" style="font-family:var(--font-display);font-size:1.125rem;font-style:italic;color:var(--fg);transition:color 0.25s;">inquiries@oceandrive64.com</a>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;font-weight:300;">Response within 24 hours</p>
+        </div>
+        <div class="info-card">
+          <p style="color:var(--accent);font-size:1.25rem;margin-bottom:1rem;">☎</p>
+          <p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:0.5rem;">Phone</p>
+          <a href="tel:+12035550192" style="font-family:var(--font-display);font-size:1.125rem;font-style:italic;color:var(--fg);">+1 (203) 555-0192</a>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;font-weight:300;">Mon–Fri 9am–6pm EST</p>
+        </div>
+      </div>
+      <div style="background:var(--border);padding:1px;">
+        <div class="spec-card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem;background:var(--bg);">
+          <div style="display:flex;gap:1.5rem;align-items:flex-start;">
+            <p style="color:var(--accent);font-size:1.25rem;flex-shrink:0;margin-top:0.25rem;">👁</p>
+            <div>
+              <h3 style="font-family:var(--font-display);font-size:1.25rem;font-style:italic;color:var(--fg);margin-bottom:0.5rem;">Private Showings Available</h3>
+              <p style="font-size:0.875rem;font-weight:300;color:var(--muted);line-height:1.7;max-width:40rem;">In-person and virtual tours are available by appointment. We accommodate flexible scheduling for out-of-state and international inquiries.</p>
+            </div>
+          </div>
+          <a class="btn-outline-dark-luxury" style="cursor:pointer;flex-shrink:0;" onclick="document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})">Request Availability</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;">
+      <div style="text-align:center;margin-bottom:4rem;" class="fade-up">
+        <p class="section-label" style="margin-bottom:1rem;">Common Questions</p>
+        <h2 class="text-section-heading" style="color:var(--fg);">Frequently Asked Questions</h2>
+      </div>
+      <div id="faqAccordion">
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-q">Is the property furnished?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body"><p>The property is available in both furnished and unfurnished configurations. Furnished arrangements include high-quality coastal furnishings curated for the space. Please indicate your preference in your inquiry.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-q">What is the minimum lease term?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body"><p>The minimum lease term is 12 months. We welcome 18 and 24-month arrangements and are open to discussing extended terms for the right tenant. The property is not available for short-term or vacation rental.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-q">Are pets allowed?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body"><p>Pets may be considered on a case-by-case basis for qualified tenants. Please include details about your pet(s) in your inquiry message. A pet addendum and additional deposit may be required.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-q">Is parking included?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body"><p>Yes. The property includes a detached two-car garage as well as additional driveway parking. The garage provides direct access to the property and includes storage space.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-q">Are utilities included?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body"><p>Utilities are the responsibility of the tenant and are not included in the base lease. The property is connected to municipal water and sewer. Electricity, gas, and internet are billed directly by the respective providers.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-q">Is the property available immediately?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body"><p>Availability is subject to current occupancy. Please contact us directly to confirm the earliest available move-in date and to discuss your desired timeline. We can accommodate flexible start dates for qualified tenants.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="cta-section">
+    <div class="cta-bg">
+      <img src="https://images.unsplash.com/photo-1723539585739-3e5850e77497?w=1800&q=80" alt="Luxury waterfront home at night" />
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.82)"></div>
+    </div>
+    <div class="cta-content fade-up">
+      <p class="section-label" style="color:var(--accent);margin-bottom:1.5rem;">64 Ocean Drive East</p>
+      <div class="divider-gold mx-auto" style="margin-bottom:2rem;"></div>
+      <h2 class="text-hero-lg" style="color:#fff;margin-bottom:1.5rem;line-height:1.1;">Begin Your Waterfront<br/><em>Living Experience</em></h2>
+      <p style="font-size:0.875rem;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.75;margin-bottom:2.5rem;max-width:28rem;margin-left:auto;margin-right:auto;">Stamford, Connecticut · Shippan Point · Long Island Sound</p>
+      <a class="btn-primary-luxury" style="cursor:pointer;" onclick="document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})">Schedule a Private Tour</a>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== GALLERY PAGE ========== -->
+<div class="page" id="page-gallery">
+
+  <!-- Hero -->
+  <section class="page-hero-sm">
+    <div class="page-hero-bg">
+      <img src="https://images.unsplash.com/photo-1644365241390-6c2c7873442c?w=1800&q=80" alt="Luxury coastal home exterior with sweeping deck" />
+      <div class="scrim-dark"></div>
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.4)"></div>
+    </div>
+    <div class="page-hero-content fade-up">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;">
+        <span style="height:1px;width:2.5rem;background:var(--accent);display:block;"></span>
+        <span class="section-label" style="color:var(--accent);">64 Ocean Drive East · Photography</span>
+      </div>
+      <h1 class="text-hero-xl" style="color:#fff;line-height:1.05;">Gallery</h1>
+      <p style="font-size:1.125rem;font-weight:300;color:rgba(255,255,255,0.75);max-width:32rem;margin-top:1.5rem;line-height:1.7;">A curated visual journey through every space and view at 64 Ocean Drive East.</p>
+    </div>
+  </section>
+
+  <!-- Gallery Grid -->
+  <section style="padding:5rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;margin-bottom:3rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="galleryFilters">
+          <button class="filter-tab active" onclick="filterGallery('All',this)">All</button>
+          <button class="filter-tab" onclick="filterGallery('Exterior',this)">Exterior</button>
+          <button class="filter-tab" onclick="filterGallery('Waterfront',this)">Waterfront</button>
+          <button class="filter-tab" onclick="filterGallery('Living Spaces',this)">Living Spaces</button>
+          <button class="filter-tab" onclick="filterGallery('Kitchen',this)">Kitchen</button>
+          <button class="filter-tab" onclick="filterGallery('Bedrooms',this)">Bedrooms</button>
+          <button class="filter-tab" onclick="filterGallery('Outdoor Living',this)">Outdoor Living</button>
+        </div>
+        <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);" id="galleryCount">17 Images</p>
+      </div>
+      <div class="masonry" id="galleryGrid">
+        <div class="masonry-item gallery-item" data-cat="Exterior"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_18088a9c8-1772500548734.png" alt="Luxury coastal home exterior" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Exterior</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Waterfront"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_111a54f50-1772259905981.png" alt="Panoramic Long Island Sound view" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Waterfront</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Living Spaces"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_124330655-1772622670233.png" alt="Bright airy open-plan living room" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Living Spaces</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Exterior"><img src="https://images.unsplash.com/photo-1567051881297-68bf67444c30?w=900&q=80" alt="Modern luxury home exterior from waterfront angle" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Exterior</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Kitchen"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_17b20bba3-1772153562902.png" alt="Modern luxury kitchen" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Kitchen</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Waterfront"><img src="https://images.unsplash.com/photo-1567574637769-685385168b65?w=900&q=80" alt="Waterfront view at dusk" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Waterfront</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Bedrooms"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_155b1b932-1772062602535.png" alt="Serene luxury primary bedroom" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Bedrooms</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Exterior"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_13c580532-1772207975648.png" alt="Elegant coastal home exterior" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Exterior</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Living Spaces"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_17dfaf6b0-1772221388109.png" alt="Elegant luxury living room" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Living Spaces</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Waterfront"><img src="https://images.unsplash.com/photo-1716720563063-5dca0db7705c?w=900&q=80" alt="Golden sunset over Connecticut waterfront" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Waterfront</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Kitchen"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_1f86a801c-1768463746444.png" alt="Elegant kitchen with custom cabinetry" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Kitchen</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Bedrooms"><img src="https://images.unsplash.com/photo-1663208542270-c76fc8b3ed9d?w=900&q=80" alt="Bright guest bedroom" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Bedrooms</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Living Spaces"><img src="https://images.unsplash.com/photo-1616048056617-93b94a339009?w=900&q=80" alt="Elegant formal dining room" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Living Spaces</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Outdoor Living"><img src="https://images.unsplash.com/photo-1684236835993-3c60fcc382d4?w=900&q=80" alt="Luxury outdoor bluestone patio" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Outdoor Living</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Bedrooms"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_1cad5a9c9-1772132409811.png" alt="Modern bedroom interior" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Bedrooms</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Outdoor Living"><img src="https://images.unsplash.com/photo-1697699383539-6b288f9bff87?w=900&q=80" alt="Serene outdoor terrace" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Outdoor Living</span></div></div>
+        <div class="masonry-item gallery-item" data-cat="Outdoor Living"><img src="https://images.unsplash.com/photo-1645174568605-e1ed74512532?w=900&q=80" alt="Coastal path along Shippan Point waterfront" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Outdoor Living</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery CTA -->
+  <section style="padding:7rem 0;background:var(--secondary);">
+    <div class="section-content text-center fade-up">
+      <p class="section-label" style="margin-bottom:1.5rem;">Experience It In Person</p>
+      <div class="divider-gold mx-auto" style="margin-bottom:2rem;"></div>
+      <h2 class="text-section-heading" style="color:var(--fg);margin-bottom:1.5rem;line-height:1.15;">See It For Yourself</h2>
+      <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:3rem;max-width:32rem;margin-left:auto;margin-right:auto;">Photography captures only so much. Schedule a private tour and experience the full beauty of 64 Ocean Drive East in person.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+        <a class="btn-primary-luxury" style="cursor:pointer;" onclick="navigate('contact')">Schedule a Private Tour</a>
+        <a class="btn-outline-dark-luxury" style="cursor:pointer;" onclick="navigate('residence')">View the Residence</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== THE RESIDENCE PAGE ========== -->
+<div class="page" id="page-residence">
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1644365241390-6c2c7873442c?w=1800&q=80" alt="Luxury coastal home with sweeping water views" />
+      <div class="scrim-dark"></div>
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.4)"></div>
+    </div>
+    <div class="hero-content fade-up">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;">
+        <span style="height:1px;width:2.5rem;background:var(--accent);display:block;"></span>
+        <span class="section-label" style="color:var(--accent);">64 Ocean Drive East · Shippan Point</span>
+      </div>
+      <h1 class="text-hero-xl" style="color:#fff;max-width:32rem;line-height:1.05;">The Residence</h1>
+      <p style="font-size:1.125rem;font-weight:300;color:rgba(255,255,255,0.75);max-width:32rem;margin-top:1.5rem;line-height:1.7;">An exceptional waterfront home designed for refined coastal living.</p>
+      <div class="highlight-strip">
+        <div><p style="font-family:var(--font-display);font-size:1.25rem;color:#fff;">4 BR</p><p style="font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.45);margin-top:3px;">Bedrooms</p></div>
+        <div><p style="font-family:var(--font-display);font-size:1.25rem;color:#fff;">4 BA</p><p style="font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.45);margin-top:3px;">Bathrooms</p></div>
+        <div><p style="font-family:var(--font-display);font-size:1.25rem;color:#fff;">3,132 SF</p><p style="font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.45);margin-top:3px;">Interior</p></div>
+        <div><p style="font-family:var(--font-display);font-size:1.25rem;color:#fff;">Long Island Sound</p><p style="font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.45);margin-top:3px;">Waterfront</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specifications -->
+  <section style="padding:6rem 0;background:var(--secondary);">
+    <div class="section-content">
+      <div style="margin-bottom:3.5rem;">
+        <p class="section-label" style="margin-bottom:1rem;">Property Overview</p>
+        <h2 class="text-section-heading fade-up" style="color:var(--fg);">Specifications</h2>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">⌂</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">4</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Bedrooms</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">✦</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">4</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Bathrooms</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">◻</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">3,132 SF</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Interior Space</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">📍</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">Waterfront</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Lot Type</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">🚗</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">Detached</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Garage</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">☀</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">Sandy</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Shoreline</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">▦</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">Bluestone</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Patio</p></div>
+        <div class="spec-card fade-up" style="background:var(--secondary);"><p style="color:var(--accent);margin-bottom:1rem;">↓</p><p style="font-family:var(--font-display);font-size:1.5rem;color:var(--fg);margin-bottom:0.25rem;">Finished</p><p style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Lower Level</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section style="padding:6rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="margin-bottom:3rem;">
+        <p class="section-label" style="margin-bottom:1rem;">Photography</p>
+        <h2 class="text-section-heading fade-up" style="color:var(--fg);">Gallery</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem;">
+          <button class="filter-tab active" onclick="filterResGallery('All',this)">All</button>
+          <button class="filter-tab" onclick="filterResGallery('Exterior',this)">Exterior</button>
+          <button class="filter-tab" onclick="filterResGallery('Waterfront',this)">Waterfront</button>
+          <button class="filter-tab" onclick="filterResGallery('Living',this)">Living</button>
+          <button class="filter-tab" onclick="filterResGallery('Kitchen',this)">Kitchen</button>
+          <button class="filter-tab" onclick="filterResGallery('Bedrooms',this)">Bedrooms</button>
+          <button class="filter-tab" onclick="filterResGallery('Outdoor',this)">Outdoor</button>
+        </div>
+      </div>
+      <div class="masonry" id="residenceGallery">
+        <div class="masonry-item gallery-item" data-rcat="Exterior"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_18088a9c8-1772500548734.png" alt="Coastal home exterior" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Exterior</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Exterior"><img src="https://images.unsplash.com/photo-1567051881297-68bf67444c30?w=900&q=80" alt="Home from waterfront" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Exterior</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Waterfront"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_111a54f50-1772259905981.png" alt="Panoramic Sound view" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Waterfront</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Waterfront"><img src="https://images.unsplash.com/photo-1567574637769-685385168b65?w=900&q=80" alt="Waterfront at dusk" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Waterfront</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Living"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_1294012e5-1770501056157.png" alt="Open-plan living room" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Living</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Living"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_17dfaf6b0-1772221388109.png" alt="Luxury living room" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Living</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Kitchen"><img src="https://images.unsplash.com/photo-1613545564267-b80e188a1541?w=900&q=80" alt="Modern luxury kitchen" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Kitchen</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Kitchen"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_182f93f39-1773125384243.png" alt="Elegant kitchen cabinetry" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Kitchen</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Bedrooms"><img src="https://images.unsplash.com/photo-1718894071528-1108a094cc78?w=900&q=80" alt="Luxury master bedroom" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Bedrooms</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Bedrooms"><img src="https://images.unsplash.com/photo-1663208542270-c76fc8b3ed9d?w=900&q=80" alt="Guest bedroom" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Bedrooms</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Outdoor"><img src="https://images.unsplash.com/photo-1684236835993-3c60fcc382d4?w=900&q=80" alt="Outdoor patio" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Outdoor</span></div></div>
+        <div class="masonry-item gallery-item" data-rcat="Outdoor"><img src="https://images.unsplash.com/photo-1697699383539-6b288f9bff87?w=900&q=80" alt="Outdoor terrace" loading="lazy" /><div class="gallery-overlay"><span class="gallery-cat-label">Outdoor</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interior Details -->
+  <section style="background:var(--bg);">
+    <div class="section-content" style="padding-top:4rem;padding-bottom:1rem;">
+      <p class="section-label" style="margin-bottom:1rem;">Interior Details</p>
+      <h2 class="text-section-heading fade-up" style="color:var(--fg);">Room by Room</h2>
+    </div>
+    <div>
+      <div class="room-row fade-up">
+        <div class="room-image"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_124330655-1772622670233.png" alt="Grand waterfront living room" loading="lazy" /></div>
+        <div class="room-text">
+          <p class="section-label" style="margin-bottom:1.25rem;">Living Room</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Grand Waterfront Living</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;">The main living area opens to sweeping Sound views through floor-to-ceiling glazing. A wood-burning fireplace anchors one wall while custom millwork and wide-plank hardwood floors create an atmosphere of refined warmth.</p>
+        </div>
+      </div>
+      <div class="room-row fade-up">
+        <div class="room-image" style="order:2;"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_17b20bba3-1772153562902.png" alt="Gourmet kitchen" loading="lazy" /></div>
+        <div class="room-text" style="order:1;">
+          <p class="section-label" style="margin-bottom:1.25rem;">Kitchen</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Gourmet Kitchen</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;">Thoughtfully designed for both form and function, the chef's kitchen features premium integrated appliances, custom cabinetry, and an oversized island — with water views that transform every meal into an occasion.</p>
+        </div>
+      </div>
+      <div class="room-row fade-up">
+        <div class="room-image"><img src="https://images.unsplash.com/photo-1703000420576-dfa645b256d6?w=1200&q=80" alt="Formal dining room" loading="lazy" /></div>
+        <div class="room-text">
+          <p class="section-label" style="margin-bottom:1.25rem;">Dining</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Formal Dining Area</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;">The dining area flows seamlessly between the kitchen and living spaces, offering a gracious setting for intimate gatherings or grand dinner parties — all with the Long Island Sound as backdrop.</p>
+        </div>
+      </div>
+      <div class="room-row fade-up">
+        <div class="room-image" style="order:2;"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_155b1b932-1772062602535.png" alt="Primary bedroom suite" loading="lazy" /></div>
+        <div class="room-text" style="order:1;">
+          <p class="section-label" style="margin-bottom:1.25rem;">Primary Suite</p>
+          <div class="divider-gold" style="margin-bottom:1.75rem;"></div>
+          <h3 style="font-size:clamp(1.5rem,2.5vw,2rem);color:var(--fg);margin-bottom:1.5rem;line-height:1.2;">Primary Bedroom Suite</h3>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;">The primary suite occupies a full wing of the home, featuring a spa-caliber ensuite bath, dual walk-in closets, and a private terrace with unobstructed water views — a true sanctuary above the Sound.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Amenities -->
+  <section style="padding:7rem 0;background:var(--secondary);">
+    <div class="section-content fade-up">
+      <div style="margin-bottom:4rem;">
+        <p class="section-label" style="margin-bottom:1rem;">Features & Amenities</p>
+        <h2 class="text-section-heading" style="color:var(--fg);">Thoughtfully Appointed</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem 6rem;" class="amenities-layout">
+        <div>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;">
+            <h3 style="font-family:var(--font-display);font-size:1.25rem;font-style:italic;color:var(--fg);">Interior Amenities</h3>
+            <div style="flex:1;height:1px;background:var(--border);"></div>
+          </div>
+          <div class="amenity-item"><span class="amenity-icon">⌂</span><span class="amenity-label">Hardwood Flooring</span></div>
+          <div class="amenity-item"><span class="amenity-icon">🔥</span><span class="amenity-label">Fireplace</span></div>
+          <div class="amenity-item"><span class="amenity-icon">☁</span><span class="amenity-label">Central Air Conditioning</span></div>
+          <div class="amenity-item"><span class="amenity-icon">✦</span><span class="amenity-label">Steam / Sauna</span></div>
+          <div class="amenity-item"><span class="amenity-icon">◻</span><span class="amenity-label">Walk-In Closets</span></div>
+          <div class="amenity-item"><span class="amenity-icon">▦</span><span class="amenity-label">Open Living Spaces</span></div>
+          <div class="amenity-item"><span class="amenity-icon">👁</span><span class="amenity-label">Water Views Throughout</span></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;">
+            <h3 style="font-family:var(--font-display);font-size:1.25rem;font-style:italic;color:var(--fg);">Exterior Amenities</h3>
+            <div style="flex:1;height:1px;background:var(--border);"></div>
+          </div>
+          <div class="amenity-item"><span class="amenity-icon">📍</span><span class="amenity-label">Waterfront Access</span></div>
+          <div class="amenity-item"><span class="amenity-icon">▦</span><span class="amenity-label">Bluestone Patio</span></div>
+          <div class="amenity-item"><span class="amenity-icon">☀</span><span class="amenity-label">Landscaped Grounds</span></div>
+          <div class="amenity-item"><span class="amenity-icon">↑</span><span class="amenity-label">Balcony / Deck</span></div>
+          <div class="amenity-item"><span class="amenity-icon">🛡</span><span class="amenity-label">Seawall</span></div>
+          <div class="amenity-item"><span class="amenity-icon">💧</span><span class="amenity-label">Underground Sprinkler System</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lease Details -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:4rem;">
+        <div>
+          <p class="section-label" style="margin-bottom:1rem;">Rental Information</p>
+          <h2 class="text-section-heading fade-up" style="color:var(--fg);">Lease Details</h2>
+        </div>
+        <a class="btn-primary-luxury" style="cursor:pointer;" onclick="navigate('contact')">Request Information</a>
+      </div>
+      <div class="lease-grid">
+        <div class="spec-card fade-up" style="display:flex;flex-direction:column;gap:1rem;background:var(--bg);">
+          <p style="color:var(--accent);font-size:1.25rem;">📄</p>
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;color:var(--fg);line-height:1.3;">Long-Term Rental</h3>
+          <p style="font-size:0.875rem;font-weight:300;color:var(--muted);line-height:1.7;">Available for 12-month minimum lease terms. Ideal for executives, relocating professionals, and discerning families.</p>
+        </div>
+        <div class="spec-card fade-up" style="display:flex;flex-direction:column;gap:1rem;background:var(--bg);">
+          <p style="color:var(--accent);font-size:1.25rem;">💼</p>
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;color:var(--fg);line-height:1.3;">Executive Relocation Friendly</h3>
+          <p style="font-size:0.875rem;font-weight:300;color:var(--muted);line-height:1.7;">Streamlined leasing process designed for corporate relocation packages and executive housing requirements.</p>
+        </div>
+        <div class="spec-card fade-up" style="display:flex;flex-direction:column;gap:1rem;background:var(--bg);">
+          <p style="color:var(--accent);font-size:1.25rem;">👁</p>
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;color:var(--fg);line-height:1.3;">Private Showings Available</h3>
+          <p style="font-size:0.875rem;font-weight:300;color:var(--muted);line-height:1.7;">In-person and virtual tours available by appointment only. Contact us to schedule your private viewing.</p>
+        </div>
+        <div class="spec-card fade-up" style="display:flex;flex-direction:column;gap:1rem;background:var(--bg);">
+          <p style="color:var(--accent);font-size:1.25rem;">⌂</p>
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;color:var(--fg);line-height:1.3;">Furnished & Unfurnished</h3>
+          <p style="font-size:0.875rem;font-weight:300;color:var(--muted);line-height:1.7;">Available in both furnished and unfurnished configurations to accommodate your lifestyle preferences.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Residence CTA -->
+  <section class="cta-section">
+    <div class="cta-bg">
+      <img src="https://images.unsplash.com/photo-1626776473447-fa9b378c832c?w=1800&q=80" alt="Luxury waterfront residence at golden hour" />
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.8)"></div>
+    </div>
+    <div class="cta-content fade-up">
+      <p class="section-label" style="color:var(--accent);margin-bottom:1.5rem;">Ready to Experience It</p>
+      <div class="divider-gold mx-auto" style="margin-bottom:2rem;"></div>
+      <h2 class="text-hero-lg" style="color:#fff;margin-bottom:2rem;line-height:1.1;">Experience Elevated<br/><em>Waterfront Living</em></h2>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+        <a class="btn-primary-luxury" style="cursor:pointer;" onclick="navigate('contact')">Schedule Private Tour</a>
+        <a class="btn-outline-light-luxury" style="cursor:pointer;" onclick="navigate('contact')">Request Leasing Details</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== WATERFRONT LIFESTYLE PAGE ========== -->
+<div class="page" id="page-lifestyle">
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="https://images.unsplash.com/photo-1698330016511-37562e282fed?w=1800&q=80" alt="Luxury waterfront lifestyle on Long Island Sound" />
+      <div class="scrim-dark"></div>
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.4)"></div>
+    </div>
+    <div class="page-hero-content fade-up">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;">
+        <span style="height:1px;width:2.5rem;background:var(--accent);display:block;"></span>
+        <span class="section-label" style="color:var(--accent);">Shippan Point · Long Island Sound</span>
+      </div>
+      <h1 class="text-hero-xl" style="color:#fff;line-height:1.05;">Waterfront<br/><em>Lifestyle</em></h1>
+      <p style="font-size:1.125rem;font-weight:300;color:rgba(255,255,255,0.75);max-width:32rem;margin-top:1.5rem;line-height:1.7;">Life at 64 Ocean Drive East is a masterclass in coastal Connecticut living.</p>
+    </div>
+  </section>
+
+  <!-- Shippan Section -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div class="shippan-grid">
+        <div class="fade-up">
+          <p class="section-label" style="margin-bottom:1.5rem;">Shippan Point</p>
+          <div class="divider-gold" style="margin-bottom:2rem;"></div>
+          <h2 class="text-section-heading" style="color:var(--fg);margin-bottom:2rem;line-height:1.15;">Stamford's Premier<br/><em>Waterfront Enclave</em></h2>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;">Shippan Point is one of the most prestigious waterfront neighborhoods in all of Fairfield County — a gated peninsula jutting into Long Island Sound with unobstructed views of the Connecticut coastline and beyond.</p>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2.5rem;">The neighborhood is home to some of the region's most distinguished residences, offering the rare combination of absolute privacy with proximity to world-class dining, culture, and transportation.</p>
+          <a class="btn-outline-dark-luxury" style="cursor:pointer;" onclick="navigate('contact')">Inquire About the Property</a>
+        </div>
+        <div class="fade-up img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1613080624635-de56a3975958?w=1200&q=80" alt="Aerial view of Stamford Connecticut coastline" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle Cards -->
+  <section style="padding:7rem 0;background:var(--secondary);">
+    <div class="section-content">
+      <div style="margin-bottom:4rem;">
+        <p class="section-label" style="margin-bottom:1rem;">Daily Life</p>
+        <h2 class="text-section-heading fade-up" style="color:var(--fg);line-height:1.15;">Your Days Here</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;" class="lifestyle-grid">
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1734772978171-0e5d75bd5eca?w=800&q=80" alt="Waterfront sunset" loading="lazy" /></div>
+          <h3>Waterfront Sunsets</h3>
+          <p>Watch the sun dissolve into Long Island Sound from your private bluestone patio each evening — nature's nightly spectacle.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1620466459351-ddaaea83a653?w=800&q=80" alt="Kayaking" loading="lazy" /></div>
+          <h3>Kayaking & Paddle Boarding</h3>
+          <p>Launch directly from the private shoreline for morning paddles across calm Connecticut waters. No marina needed.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1642641387718-a7c105193afe?w=800&q=80" alt="Coastal path" loading="lazy" /></div>
+          <h3>Coastal Walks</h3>
+          <p>Miles of scenic waterfront paths wind through Shippan Point — perfect for morning runs, evening strolls, or cycling along the Sound.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://img.rocket.new/generatedImages/rocket_gen_img_1e783dfe8-1772966504350.png" alt="Outdoor entertaining" loading="lazy" /></div>
+          <h3>Waterfront Entertaining</h3>
+          <p>The bluestone patio and private shoreline create an incomparable backdrop for gatherings — from intimate dinners to summer celebrations.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1587571164387-df579abdc4f3?w=800&q=80" alt="Home office" loading="lazy" /></div>
+          <h3>Inspired Remote Work</h3>
+          <p>The finest home office in Fairfield County — Sound views, natural light, and the kind of focus only coastal serenity can provide.</p>
+        </div>
+        <div class="lifestyle-card fade-up">
+          <div class="card-img-wrap img-zoom"><img src="https://images.unsplash.com/photo-1696225478519-edf7501e0df8?w=800&q=80" alt="Train to NYC" loading="lazy" /></div>
+          <h3>60 Minutes to Manhattan</h3>
+          <p>Metro-North's New Haven Line connects Stamford to Grand Central in under an hour — waterfront serenity without isolation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stamford Section -->
+  <section style="padding:7rem 0;background:var(--bg);">
+    <div class="section-content">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;" class="stamford-layout">
+        <div class="fade-up img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1647427017067-8f33ccbae493?w=1200&q=80" alt="Downtown Stamford Connecticut" loading="lazy" />
+        </div>
+        <div class="fade-up">
+          <p class="section-label" style="margin-bottom:1.5rem;">Stamford, CT</p>
+          <div class="divider-gold" style="margin-bottom:2rem;"></div>
+          <h2 class="text-section-heading" style="color:var(--fg);margin-bottom:2rem;line-height:1.15;">The City at<br/><em>Your Doorstep</em></h2>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;">Stamford is Connecticut's fastest-growing city and a hub for finance, technology, and culture. World-class restaurants, boutique shopping, and live entertainment are minutes away from Shippan Point.</p>
+          <p style="font-size:1rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:2.5rem;">The city is home to the corporate headquarters of dozens of Fortune 500 companies, making it an ideal base for executives and senior professionals.</p>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div class="prox-item"><span class="prox-place">Downtown Stamford</span><span class="prox-dist">8 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Stamford Town Center</span><span class="prox-dist">10 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">UBS Arena (Greenwich)</span><span class="prox-dist">15 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Cove Island Park & Beach</span><span class="prox-dist">4 min drive</span></div>
+            <div class="prox-item"><span class="prox-place">Stamford Marina</span><span class="prox-dist">5 min drive</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Local Gallery -->
+  <section style="padding:7rem 0;background:var(--secondary);">
+    <div class="section-content">
+      <div style="margin-bottom:3rem;">
+        <p class="section-label" style="margin-bottom:1rem;">The Surrounding Area</p>
+        <h2 class="text-section-heading fade-up" style="color:var(--fg);">Life Along the Sound</h2>
+      </div>
+      <div class="local-gallery fade-up">
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;"><img src="https://images.unsplash.com/photo-1734772978171-0e5d75bd5eca?w=800&q=80" alt="Waterfront sunset" loading="lazy" /></div>
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;"><img src="https://images.unsplash.com/photo-1645174568605-e1ed74512532?w=800&q=80" alt="Coastal path" loading="lazy" /></div>
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;"><img src="https://images.unsplash.com/photo-1620466459351-ddaaea83a653?w=800&q=80" alt="Kayaking" loading="lazy" /></div>
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;"><img src="https://images.unsplash.com/photo-1684236835993-3c60fcc382d4?w=800&q=80" alt="Outdoor patio" loading="lazy" /></div>
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;"><img src="https://images.unsplash.com/photo-1567574637769-685385168b65?w=800&q=80" alt="Waterfront at dusk" loading="lazy" /></div>
+        <div class="img-zoom" style="border-radius:2px;aspect-ratio:4/3;overflow:hidden;"><img src="https://images.unsplash.com/photo-1716720563063-5dca0db7705c?w=800&q=80" alt="Golden sunset" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle CTA -->
+  <section class="cta-section-tall">
+    <div class="cta-bg">
+      <img src="https://images.unsplash.com/photo-1542565048-55c9ef0d6e35?w=1800&q=80" alt="Luxury waterfront home at dusk" />
+      <div style="position:absolute;inset:0;background:rgba(31,41,51,0.8)"></div>
+    </div>
+    <div class="cta-content fade-up">
+      <p class="section-label" style="color:var(--accent);margin-bottom:1.5rem;">Begin Your Journey</p>
+      <div class="divider-gold mx-auto" style="margin-bottom:2rem;"></div>
+      <h2 class="text-hero-lg" style="color:#fff;margin-bottom:1.5rem;line-height:1.1;">Live the Waterfront<br/><em>Life You've Imagined</em></h2>
+      <p style="font-size:1rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.75;margin-bottom:3rem;max-width:32rem;margin-left:auto;margin-right:auto;">Schedule a private tour and discover why 64 Ocean Drive East is one of Connecticut's most exceptional rental residences.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+        <a class="btn-primary-luxury" style="cursor:pointer;" onclick="navigate('contact')">Schedule a Private Tour</a>
+        <a class="btn-outline-light-luxury" style="cursor:pointer;" onclick="navigate('residence')">View the Residence</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer id="site-footer">
+  <div class="footer-inner">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:2.5rem;">
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <div class="logo-mark" style="width:32px;height:32px;"><span style="font-size:0.875rem;">O</span></div>
+          <span style="font-family:var(--font-display);font-size:1.125rem;font-style:italic;color:var(--fg);">OceanDrive64</span>
+        </div>
+        <p style="font-size:0.75rem;color:var(--muted);max-width:14rem;line-height:1.6;">64 Ocean Drive East · Shippan Point<br/>Stamford, Connecticut 06902</p>
+      </div>
+      <nav style="display:flex;flex-wrap:wrap;gap:2rem 3rem;">
+        <button class="footer-link" onclick="navigate('home')">Home</button>
+        <button class="footer-link" onclick="navigate('residence')">The Residence</button>
+        <button class="footer-link" onclick="navigate('lifestyle')">Waterfront Lifestyle</button>
+        <button class="footer-link" onclick="navigate('gallery')">Gallery</button>
+        <button class="footer-link" onclick="navigate('contact')">Contact</button>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p style="font-size:0.75rem;color:var(--muted);">© 2026 OceanDrive64. All rights reserved.</p>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <button class="footer-link" style="font-size:0.75rem;" onclick="navigate('contact')">Privacy</button>
+        <button class="footer-link" style="font-size:0.75rem;" onclick="navigate('contact')">Terms</button>
+        <span style="font-size:0.75rem;color:var(--muted);">Shippan Point · Stamford, CT</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Navigation
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Trigger fade-up animations for new page
+    setTimeout(() => observeFadeUps(), 100);
+  }
+
+  // Header scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  function toggleMobile() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+  }
+
+  // Contact form
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('contactForm').classList.add('hide');
+    document.getElementById('formSuccess').classList.add('show');
+  }
+
+  // Accordion
+  function toggleAccordion(btn) {
+    const icon = btn.querySelector('.acc-icon');
+    const body = btn.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.acc-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.acc-icon').forEach(i => i.classList.remove('open'));
+    if (!isOpen) {
+      body.classList.add('open');
+      icon.classList.add('open');
+    }
+  }
+
+  // Gallery filter
+  function filterGallery(cat, btn) {
+    document.querySelectorAll('#galleryFilters .filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const items = document.querySelectorAll('#galleryGrid .gallery-item');
+    let count = 0;
+    items.forEach(item => {
+      if (cat === 'All' || item.dataset.cat === cat) {
+        item.style.display = 'block'; count++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    document.getElementById('galleryCount').textContent = count + ' ' + (count === 1 ? 'Image' : 'Images');
+  }
+
+  // Residence gallery filter
+  function filterResGallery(cat, btn) {
+    btn.closest('div').querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#residenceGallery .gallery-item').forEach(item => {
+      item.style.display = (cat === 'All' || item.dataset.rcat === cat) ? 'block' : 'none';
+    });
+  }
+
+  // IntersectionObserver for fade-up
+  function observeFadeUps() {
+    const activePage = document.querySelector('.page.active');
+    if (!activePage) return;
+    const els = activePage.querySelectorAll('.fade-up:not(.visible)');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => observer.observe(el));
+  }
+
+  // Init
+  observeFadeUps();
+
+  // Staggered reveal for hero elements
+  document.querySelectorAll('.hero-section .fade-up, .page-hero .fade-up, .page-hero-sm .fade-up').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.15) + 's';
+  });
+
+  // Responsive helpers
+  function setResponsiveLayouts() {
+    const isMobile = window.innerWidth < 1024;
+    document.querySelectorAll('.hero-grid').forEach(g => {
+      g.style.gridTemplateColumns = isMobile ? '1fr' : '1fr 1fr';
+    });
+    document.querySelectorAll('.about-layout').forEach(g => {
+      g.style.gridTemplateColumns = isMobile ? '1fr' : '5fr 7fr';
+    });
+    document.querySelectorAll('.contact-layout').forEach(g => {
+      g.style.gridTemplateColumns = isMobile ? '1fr' : '4fr 8fr';
+    });
+    document.querySelectorAll('.lifestyle-grid').forEach(g => {
+      g.style.gridTemplateColumns = isMobile ? '1fr' : 'repeat(3,1fr)';
+    });
+    document.querySelectorAll('.location-layout, .shippan-grid, .stamford-layout').forEach(g => {
+      g.style.gridTemplateColumns = isMobile ? '1fr' : '1fr 1fr';
+    });
+    document.querySelectorAll('.amenities-layout').forEach(g => {
+      g.style.gridTemplateColumns = isMobile ? '1fr' : '1fr 1fr';
+    });
+    if (window.innerWidth < 768) {
+      document.querySelectorAll('.local-gallery').forEach(g => g.style.gridTemplateColumns = 'repeat(2,1fr)');
+    }
+  }
+  setResponsiveLayouts();
+  window.addEventListener('resize', setResponsiveLayouts);
+</script>
+</body>
+</html>
